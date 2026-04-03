@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Thompson — Full-Stack Engineer & UX Architect</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="noise"></div>
+  <canvas id="bg-canvas"></canvas>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ── NAV ────────────────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="dot"></span>
+      Alex Thompson
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">Bio</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="nav-cta">Download CV ↗</button>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="blink"></span>
+        Available for projects · 2026
+      </div>
+      <h1>
+        Full-Stack<br>Engineer &<br>
+        <span class="line2">UX Architect</span>
+      </h1>
+      <p class="hero-sub">
+        I build robust and scalable web applications with a strong focus on
+        user-centric design and performance. Turning complex problems into
+        elegant digital experiences.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary">Explore My Work</button>
+        <button class="btn-ghost">Contact Me →</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">42</div>
+          <div class="stat-label">Projects Shipped</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">18</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="vis-ring vis-ring-1"></div>
+        <div class="vis-ring vis-ring-2"></div>
+        <div class="vis-ring vis-ring-3"></div>
+        <div class="vis-center">
+          <!-- Reemplazá img/cvv.png con tu foto real -->
+          <img
+            src="img/cvv.png"
+            style="width:100%;height:100%;object-fit:cover;border-radius:50%;"
+            alt="Profile photo"
+          >
+        </div>
+        <div class="vis-orb orb-1"></div>
+        <div class="vis-orb orb-2"></div>
+        <div class="vis-orb orb-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TICKER ─────────────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+
+  <!-- ── WORK ───────────────────────────────────────────────────── -->
+  <section class="section" id="work">
+    <div class="section-header reveal">
+      <div class="section-label">Selected Work</div>
+      <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
+    </div>
+    <div class="projects-grid reveal">
+
+      <div class="project-card">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background:radial-gradient(ellipse at 30% 40%,rgba(244,114,182,.14),transparent 60%)"></div>
+          <div class="thumb-number">01</div>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 01-8 0"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Stripe</span>
+              <span class="tag">PostgreSQL</span>
+            </div>
+            <span class="project-year">2025</span>
+          </div>
+          <div class="project-title">E-commerce Platform</div>
+          <div class="project-desc">Scalable marketplace with real-time inventory management, multi-vendor support, advanced analytics dashboard and integrated payment processing for 50k+ monthly users.</div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background:radial-gradient(ellipse at 60% 30%,rgba(168,85,247,.16),transparent 60%)"></div>
+          <div class="thumb-number">02</div>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">D3</span>
+              <span class="tag">GraphQL</span>
+            </div>
+            <span class="project-year">2025</span>
+          </div>
+          <div class="project-title">SaaS Dashboard</div>
+          <div class="project-desc">Multi-tenant analytics platform with real-time data visualization and RBAC.</div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background:radial-gradient(ellipse at 50% 50%,rgba(236,72,153,.14),transparent 60%)"></div>
+          <div class="thumb-number">03</div>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">OpenAI</span>
+              <span class="tag">FastAPI</span>
+            </div>
+            <span class="project-year">2024</span>
+          </div>
+          <div class="project-title">AI Content Generator</div>
+          <div class="project-desc">Intelligent content creation tool with fine-tuned models and batch processing.</div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── ABOUT ──────────────────────────────────────────────────── -->
+  <section class="section" id="about">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">Bio</div>
+        <h2 class="section-title" style="margin-bottom:2.5rem;">
+          The person<br>behind the <span class="accent">code</span>
+        </h2>
+        <div class="about-highlight">
+          "Design is not just how it looks — it's how it works, and how it makes people feel."
+        </div>
+        <p>I'm a Full-Stack Engineer and UX Architect with <strong>8+ years</strong> of experience building products that people love. I work at the intersection of engineering precision and design thinking.</p>
+        <p>My approach combines <strong>robust system architecture</strong> with obsessive attention to user experience — because the best products are both technically excellent and a joy to use.</p>
+        <p>When I'm not writing code, I'm mentoring junior developers, contributing to open source, and exploring generative design systems.</p>
+        <div style="margin-top:2.5rem;display:flex;gap:1rem;">
+          <button class="btn-primary" style="font-size:.8rem;padding:.7rem 1.8rem;">Download CV</button>
+          <button class="btn-ghost"   style="font-size:.8rem;padding:.7rem 1.8rem;">View GitHub</button>
+        </div>
+      </div>
+
+      <div class="about-skills reveal" style="padding-top:5rem;">
+        <div class="section-label" style="margin-bottom:2rem;">Expertise</div>
+        <div class="skills-list" id="skills-list">
+          <div class="skill-row"><span class="skill-name">React / Next.js</span><div class="skill-track"><div class="skill-fill" style="width:0" data-w="95"></div></div><span class="skill-pct">95%</span></div>
+          <div class="skill-row"><span class="skill-name">TypeScript</span>    <div class="skill-track"><div class="skill-fill" style="width:0" data-w="90"></div></div><span class="skill-pct">90%</span></div>
+          <div class="skill-row"><span class="skill-name">Node.js</span>        <div class="skill-track"><div class="skill-fill" style="width:0" data-w="88"></div></div><span class="skill-pct">88%</span></div>
+          <div class="skill-row"><span class="skill-name">Python</span>         <div class="skill-track"><div class="skill-fill" style="width:0" data-w="82"></div></div><span class="skill-pct">82%</span></div>
+          <div class="skill-row"><span class="skill-name">Figma / UX</span>    <div class="skill-track"><div class="skill-fill" style="width:0" data-w="90"></div></div><span class="skill-pct">90%</span></div>
+          <div class="skill-row"><span class="skill-name">AWS / Cloud</span>   <div class="skill-track"><div class="skill-fill" style="width:0" data-w="80"></div></div><span class="skill-pct">80%</span></div>
+          <div class="skill-row"><span class="skill-name">PostgreSQL</span>    <div class="skill-track"><div class="skill-fill" style="width:0" data-w="85"></div></div><span class="skill-pct">85%</span></div>
+          <div class="skill-row"><span class="skill-name">Docker / K8s</span> <div class="skill-track"><div class="skill-fill" style="width:0" data-w="78"></div></div><span class="skill-pct">78%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── EXPERIENCE ─────────────────────────────────────────────── -->
+  <section class="section" id="experience">
+    <div class="section-header reveal">
+      <div class="section-label">Career</div>
+      <h2 class="section-title">Work <span class="accent">Experience</span></h2>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-nav reveal">
+        <div class="exp-nav-item active">
+          <div class="exp-nav-company">Vercel</div>
+          <div class="exp-nav-period">2023 – Present</div>
+        </div>
+        <div class="exp-nav-item">
+          <div class="exp-nav-company">Shopify</div>
+          <div class="exp-nav-period">2021 – 2023</div>
+        </div>
+        <div class="exp-nav-item">
+          <div class="exp-nav-company">Startup Studio</div>
+          <div class="exp-nav-period">2019 – 2021</div>
+        </div>
+        <div class="exp-nav-item">
+          <div class="exp-nav-company">Freelance</div>
+          <div class="exp-nav-period">2017 – 2019</div>
+        </div>
+      </div>
+      <div class="exp-entries reveal">
+        <div class="exp-entry">
+          <div class="exp-header">
+            <div class="exp-role">Senior Full-Stack Engineer</div>
+            <div class="exp-company-name">Vercel · San Francisco, CA</div>
+          </div>
+          <p class="exp-body">Leading the development of Next.js-based developer tooling and internal platform features. Collaborated closely with design and product to ship features used by millions of developers worldwide. Architected a new edge-computing module that reduced p99 latency by 40%.</p>
+          <div class="exp-tags">
+            <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Edge Runtime</span><span class="tag">Postgres</span>
+          </div>
+        </div>
+        <div class="exp-entry">
+          <div class="exp-header">
+            <div class="exp-role">Full-Stack Engineer</div>
+            <div class="exp-company-name">Shopify · Ottawa, Canada</div>
+          </div>
+          <p class="exp-body">Built and maintained storefront components for Shopify's core product. Redesigned the checkout UX flow, resulting in a 12% increase in conversion rate. Led a team of 4 engineers across 3 time zones.</p>
+          <div class="exp-tags">
+            <span class="tag">React</span><span class="tag">Ruby on Rails</span><span class="tag">GraphQL</span><span class="tag">Redis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── CONTACT ────────────────────────────────────────────────── -->
+  <section class="contact-section" id="contact">
+    <div class="contact-bg-text">Hello.</div>
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">Let's build<br>something <span class="accent">great</span></h2>
+        <div class="big-email">hello@alexthompson.dev</div>
+        <p style="color:var(--muted);font-size:.85rem;line-height:1.7;max-width:400px;">
+          Have a project in mind or want to explore opportunities? I'm always open to interesting challenges and collaborations.
+        </p>
+        <div class="contact-socials">
+          <a href="#" class="social-btn">GitHub</a>
+          <a href="#" class="social-btn">LinkedIn</a>
+          <a href="#" class="social-btn">Dribbble</a>
+          <a href="#" class="social-btn">Twitter</a>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" placeholder="John">
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="john@example.com">
+        </div>
+        <div class="form-field">
+          <label>Subject</label>
+          <input type="text" placeholder="Project inquiry">
+        </div>
+        <div class="form-field">
+          <label>Message</label>
+          <textarea placeholder="Tell me about your project..."></textarea>
+        </div>
+        <button class="form-submit">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-logo">Alex Thompson · Full-Stack Engineer</span>
+    <span class="footer-copy">© 2026 · Designed & built with passion</span>
+  </footer>
+
+  <!-- JavaScript (al final del body para mejor rendimiento) -->
+  <script src="js/main.js"></script>
+</body>
+</html>
