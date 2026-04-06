@@ -1,3 +1,76 @@
+// ── STARFIELD ──
+(function () {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'starfield';
+  document.body.insertBefore(canvas, document.body.firstChild);
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Star layers: [count, size, speed, opacity]
+  const layers = [
+    { count: 120, size: .6,  speed: .12, opacity: .45 },
+    { count: 80,  size: 1.1, speed: .22, opacity: .6  },
+    { count: 40,  size: 1.8, speed: .38, opacity: .8  },
+  ];
+
+  const stars = [];
+  layers.forEach(layer => {
+    for (let i = 0; i < layer.count; i++) {
+      stars.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: layer.size * (.8 + Math.random() * .4),
+        speed: layer.speed * (.7 + Math.random() * .6),
+        opacity: layer.opacity * (.6 + Math.random() * .4),
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: .003 + Math.random() * .006,
+      });
+    }
+  });
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(s => {
+      s.twinkle += s.twinkleSpeed;
+      const alpha = s.opacity * (.75 + .25 * Math.sin(s.twinkle));
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.fill();
+
+      // Tiny cross glint on larger stars
+      if (s.r > 1.4) {
+        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * .4})`;
+        ctx.lineWidth = .5;
+        ctx.beginPath();
+        ctx.moveTo(s.x - s.r * 2.5, s.y);
+        ctx.lineTo(s.x + s.r * 2.5, s.y);
+        ctx.moveTo(s.x, s.y - s.r * 2.5);
+        ctx.lineTo(s.x, s.y + s.r * 2.5);
+        ctx.stroke();
+      }
+
+      // Slow upward drift
+      s.y -= s.speed;
+      if (s.y < -4) {
+        s.y = canvas.height + 4;
+        s.x = Math.random() * canvas.width;
+      }
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
 // ── CUSTOM CURSOR (sin delay, interpolación suave) ──
 const cursor = document.getElementById('cursor');
 const ring   = document.getElementById('cursor-ring');
@@ -8,13 +81,11 @@ let ringX  = 0, ringY  = 0;
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  // El punto sigue al instante
   cursor.style.left = mouseX + 'px';
   cursor.style.top  = mouseY + 'px';
 });
  
 function animateRing() {
-  // Lerp suave: 0.18 = velocidad de seguimiento (0–1)
   ringX += (mouseX - ringX) * 0.18;
   ringY += (mouseY - ringY) * 0.18;
   ring.style.left = ringX + 'px';

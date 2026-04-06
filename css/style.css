@@ -25,6 +25,21 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
 }
+
+/* ── STARFIELD CANVAS ── */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensure all content sits above the starfield */
+nav, .hero, .ticker, .section, .divider,
+.contact-section, footer, .noise {
+  position: relative;
+  z-index: 1;
+}
  
 /* ── NOISE OVERLAY ── */
 .noise {
@@ -34,7 +49,6 @@ body {
 }
  
 /* ── CUSTOM CURSOR ── */
-/* Quitado: transition del ring (causaba lag visual extra) */
 .cursor {
   position: fixed; width: 8px; height: 8px;
   background: var(--accent); border-radius: 50%;
@@ -46,7 +60,6 @@ body {
   border: 1px solid rgba(244,114,182,.4); border-radius: 50%;
   pointer-events: none; z-index: 10000;
   transform: translate(-50%,-50%);
-  /* transition eliminado — el lerp en JS lo controla */
 }
  
 /* ── NAV ── */
@@ -113,7 +126,6 @@ nav {
 }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
  
-/* CAMBIO: clamp reducido de (3.2rem,6vw,5.5rem) → (2.2rem,4vw,3.8rem) */
 h1 {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 4vw, 3.8rem);
@@ -159,50 +171,124 @@ h1 {
  
 /* ── HERO VISUAL ── */
 .hero-right { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.hero-visual { position: relative; width: 380px; height: 380px; }
- 
-.vis-ring {
-  position: absolute; border-radius: 50%; border: 1px solid;
-  top: 50%; left: 50%; transform: translate(-50%,-50%);
-  animation: spin linear infinite;
+
+/* ── PHOTO ORBIT SYSTEM ── */
+.hero-visual {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.vis-ring-1 { width: 340px; height: 340px; border-color: rgba(244,114,182,.15); animation-duration: 30s; }
-.vis-ring-2 { width: 290px; height: 290px; border-color: rgba(167,139,250,.12); animation-duration: 20s; animation-direction: reverse; }
-.vis-ring-3 { width: 240px; height: 240px; border-color: rgba(52,211,153,.1); animation-duration: 40s; }
-@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
- 
-/* CAMBIO: foto centrada — eliminado overflow hidden del texto fallback,
-   img ahora tiene display:block y margin:auto para forzar centrado */
+
+/* Outer glow halo */
+.hero-visual::before {
+  content: '';
+  position: absolute;
+  width: 340px; height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(244,114,182,.18) 0%, rgba(167,139,250,.1) 40%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%,100% { opacity: .7; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 1;  transform: translate(-50%,-50%) scale(1.06); }
+}
+
+/* The three orbit rings — each wraps a dot that travels around */
+.orbit-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-ring-1 {
+  width: 360px; height: 360px;
+  border-color: rgba(244,114,182,.25);
+  animation: orbit-spin 18s linear infinite;
+}
+.orbit-ring-2 {
+  width: 310px; height: 310px;
+  border-color: rgba(167,139,250,.2);
+  animation: orbit-spin 28s linear infinite reverse;
+}
+.orbit-ring-3 {
+  width: 260px; height: 260px;
+  border-color: rgba(52,211,153,.18);
+  animation: orbit-spin 38s linear infinite;
+}
+
+@keyframes orbit-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Dots riding on the rings */
+.orbit-ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 0;
+  transform: translateY(-50%);
+}
+.orbit-ring-1::after {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  box-shadow: 0 0 10px 3px rgba(244,114,182,.7);
+  margin-top: -1px;
+}
+.orbit-ring-2::after {
+  width: 7px; height: 7px;
+  background: var(--accent2);
+  box-shadow: 0 0 8px 2px rgba(167,139,250,.7);
+  margin-top: -1px;
+}
+.orbit-ring-3::after {
+  width: 8px; height: 8px;
+  background: var(--accent3);
+  box-shadow: 0 0 8px 3px rgba(52,211,153,.6);
+  margin-top: -1px;
+}
+
+/* Photo frame */
 .vis-center {
-  position: absolute; top: 50%; left: 50%;
-  width: 180px; height: 180px; border-radius: 50%;
-  transform: translate(-50%,-50%);
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
-  border: 1px solid rgba(244,114,182,.3);
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
   overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+
+  /* Layered border: accent glow ring + dark gap + image */
+  box-shadow:
+    0 0 0 3px rgba(244,114,182,.6),
+    0 0 0 6px rgba(10,10,15,1),
+    0 0 0 7px rgba(255,255,255,.07),
+    0 0 40px 10px rgba(244,114,182,.2),
+    0 0 80px 20px rgba(167,139,250,.12);
 }
-/* Asegura que la imagen cubra el círculo perfectamente y quede centrada */
+
 .vis-center img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top; /* centra verticalmente hacia la cara */
+  object-position: center top;
   border-radius: 50%;
-  margin: 0;
+  filter: brightness(1.05) contrast(1.02) saturate(1.1);
+  transition: transform .6s ease;
 }
- 
-.vis-orb {
-  position: absolute; border-radius: 50%;
-  background: var(--accent);
-  animation: orbit linear infinite;
+.vis-center:hover img {
+  transform: scale(1.05);
 }
-.orb-1 { width: 10px; height: 10px; top: calc(50% - 170px); left: 50%; margin-left: -5px; animation-duration: 6s; }
-.orb-2 { width: 6px; height: 6px; background: var(--accent2); top: 50%; left: calc(50% + 145px); margin-top: -3px; animation-duration: 9s; animation-direction: reverse; }
-.orb-3 { width: 8px; height: 8px; background: var(--accent3); bottom: calc(50% - 120px); right: calc(50% - 40px); animation-duration: 12s; }
-@keyframes orbit { to { transform: rotate(360deg) translateX(0); } }
- 
+
 /* ── TICKER ── */
 .ticker {
   overflow: hidden;
@@ -387,4 +473,3 @@ footer {
   .about-grid, .exp-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
   .section { padding: 4rem 1.5rem; }
 }
- 
