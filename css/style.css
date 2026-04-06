@@ -34,17 +34,19 @@ body {
 }
  
 /* ── CUSTOM CURSOR ── */
+/* Quitado: transition del ring (causaba lag visual extra) */
 .cursor {
   position: fixed; width: 8px; height: 8px;
   background: var(--accent); border-radius: 50%;
   pointer-events: none; z-index: 10000;
-  transform: translate(-50%,-50%); transition: transform .1s;
+  transform: translate(-50%,-50%);
 }
 .cursor-ring {
   position: fixed; width: 32px; height: 32px;
   border: 1px solid rgba(244,114,182,.4); border-radius: 50%;
   pointer-events: none; z-index: 10000;
-  transform: translate(-50%,-50%); transition: all .18s ease;
+  transform: translate(-50%,-50%);
+  /* transition eliminado — el lerp en JS lo controla */
 }
  
 /* ── NAV ── */
@@ -111,11 +113,12 @@ nav {
 }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
  
+/* CAMBIO: clamp reducido de (3.2rem,6vw,5.5rem) → (2.2rem,4vw,3.8rem) */
 h1 {
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 6vw, 5.5rem);
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -.02em;
   margin-bottom: 1.8rem;
 }
@@ -168,20 +171,26 @@ h1 {
 .vis-ring-3 { width: 240px; height: 240px; border-color: rgba(52,211,153,.1); animation-duration: 40s; }
 @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
  
+/* CAMBIO: foto centrada — eliminado overflow hidden del texto fallback,
+   img ahora tiene display:block y margin:auto para forzar centrado */
 .vis-center {
   position: absolute; top: 50%; left: 50%;
   width: 180px; height: 180px; border-radius: 50%;
   transform: translate(-50%,-50%);
   background: linear-gradient(135deg, #1a1a2e, #16213e);
   border: 1px solid rgba(244,114,182,.3);
-  display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  font-family: var(--font-display); font-size: 3.5rem; font-weight: 800;
-  color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
 }
+/* Asegura que la imagen cubra el círculo perfectamente y quede centrada */
 .vis-center img {
-  width: 100%; height: 100%;
-  object-fit: cover; border-radius: 50%;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top; /* centra verticalmente hacia la cara */
+  border-radius: 50%;
+  margin: 0;
 }
  
 .vis-orb {
@@ -378,3 +387,4 @@ footer {
   .about-grid, .exp-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
   .section { padding: 4rem 1.5rem; }
 }
+ 
