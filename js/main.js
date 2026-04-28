@@ -99,7 +99,7 @@ const tickerItems = [
   'SQL · Intermediate', 'C# / .NET · Intermediate', 'Java · Intermediate',
   'HTML · Intermediate', 'CSS · Beginner', 'Python · Beginner',
   'Oracle NetSuite', 'Git', 'Salesforce', 'English C1',
-  'Buenos Aires, Argentina', 'Systems Engineering'
+  'Buenos Aires, Argentina', 'Systems Engineering.'
 ];
 const track = document.getElementById('ticker');
 const tickerHTML = tickerItems
