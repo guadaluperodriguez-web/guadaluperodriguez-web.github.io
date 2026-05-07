@@ -3,19 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guadalupe Rodríguez — Technical Support Analyst | Systems Engineering Student.</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
-    rel="stylesheet"
-  >
+  <title>Guadalupe Rodríguez — Technical Support Analyst | Systems Engineering Student</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+ 
   <div class="noise"></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-ring" id="cursor-ring"></div>
-
+ 
   <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">
@@ -24,12 +21,13 @@
     </a>
     <div class="nav-links">
       <a href="#about">Bio</a>
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </div>
-    <button class="nav-cta">Download CV ↗</button>
+    <a href="cv/guadalupe-rodriguez-cv.pdf" download class="nav-cta">Download CV ↗</a>
   </nav>
-
+ 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
@@ -46,13 +44,13 @@
         Focused on system analysis and efficient technological solutions.
       </p>
       <div class="hero-actions">
-        <button class="btn-primary">Explore My Work</button>
-        <button class="btn-ghost">Contact Me →</button>
+        <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Explore My Work</button>
+        <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Me →</button>
       </div>
       <div class="hero-stats">
         <div class="stat">
           <div class="stat-num">2+</div>
-          <div class="stat-label">Year Experience</div>
+          <div class="stat-label">Years Experience</div>
         </div>
         <div class="stat">
           <div class="stat-num">6+</div>
@@ -64,46 +62,321 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="hero-right">
       <div class="hero-visual">
         <div class="orbit-ring orbit-ring-1"></div>
         <div class="orbit-ring orbit-ring-2"></div>
         <div class="orbit-ring orbit-ring-3"></div>
         <div class="vis-center">
-          <img src="data:image/png;base64,/9j/4AAQ..." style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Profile photo">
+          <!-- Replace with your actual photo: <img src="img/photo.jpg" alt="Guadalupe Rodríguez"> -->
+          <div class="photo-placeholder">GR</div>
         </div>
       </div>
     </div>
   </section>
-
+ 
   <div class="divider"></div>
-
+ 
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+ 
+  <div class="divider"></div>
+ 
   <!-- ABOUT -->
-  <section class="section" id="about">
-    <!-- ... (igual que antes) ... -->
+  <section class="section reveal" id="about">
+    <div class="section-header">
+      <div class="section-label">01 — About</div>
+      <h2 class="section-title">Who I <span class="accent">Am</span></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="about-highlight">
+          "I believe that technology, well applied, simplifies processes and creates real value for people."
+        </p>
+        <p>
+          I am a Systems Engineering student at Buenos Aires, Argentina, with a strong technical background
+          in support and software development. I combine analytical skills with a practical approach
+          to solve technological problems efficiently.
+        </p>
+        <p>
+          My experience spans from technical support in corporate environments to building management
+          systems and automation scripts. I work primarily with C#, .NET, Java, SQL, and Python,
+          and I'm constantly expanding my knowledge in web development.
+        </p>
+        <p>
+          I am fluent in Spanish (native) and English (C1 level), which allows me to work
+          effectively in international teams and access global technical documentation.
+        </p>
+      </div>
+      <div class="skills-side">
+        <div class="section-label" style="margin-bottom:1.5rem;">Skills</div>
+        <div class="skills-list" id="skills-list">
+          <div class="skill-row">
+            <span class="skill-name">C# / .NET</span>
+            <div class="skill-track"><div class="skill-fill" data-w="75" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">SQL</span>
+            <div class="skill-track"><div class="skill-fill" data-w="72" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Java</span>
+            <div class="skill-track"><div class="skill-fill" data-w="65" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">HTML/CSS</span>
+            <div class="skill-track"><div class="skill-fill" data-w="68" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Python</span>
+            <div class="skill-track"><div class="skill-fill" data-w="45" style="width:0%"></div></div>
+            <span class="skill-pct">Beginner</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">JavaScript</span>
+            <div class="skill-track"><div class="skill-fill" data-w="50" style="width:0%"></div></div>
+            <span class="skill-pct">Beginner</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">NetSuite</span>
+            <div class="skill-track"><div class="skill-fill" data-w="60" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Git</span>
+            <div class="skill-track"><div class="skill-fill" data-w="65" style="width:0%"></div></div>
+            <span class="skill-pct">Intermediate</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
-
+ 
   <div class="divider"></div>
-
+ 
+  <!-- PROJECTS -->
+  <section class="section" id="projects">
+    <div class="section-header reveal">
+      <div class="section-label">02 — Projects</div>
+      <h2 class="section-title">Selected <span class="accent">Work</span></h2>
+    </div>
+    <div class="projects-grid">
+ 
+      <!-- PROJECT 1 -->
+      <div class="project-card reveal" onclick="window.location.href='projects/inventory/index.html'">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background: radial-gradient(ellipse at 30% 40%, rgba(244,114,182,.18) 0%, transparent 60%)"></div>
+          <span class="thumb-number">01</span>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="10" rx="1"/><rect x="8" y="22" width="32" height="10" rx="1"/><rect x="8" y="36" width="20" height="4" rx="1"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">C#</span>
+              <span class="tag">.NET</span>
+              <span class="tag">SQL</span>
+            </div>
+            <span class="project-year">2025</span>
+          </div>
+          <div class="project-title">Inventory Management System</div>
+          <p class="project-desc">Management system built in C# and .NET to handle stock, users, and reports. SQL database integration for full traceability.</p>
+        </div>
+        <span class="project-arrow">↗</span>
+      </div>
+ 
+      <!-- PROJECT 2 -->
+      <div class="project-card reveal" onclick="window.location.href='projects/appointments/index.html'">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background: radial-gradient(ellipse at 70% 30%, rgba(167,139,250,.18) 0%, transparent 60%)"></div>
+          <span class="thumb-number">02</span>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="30" rx="2"/><line x1="6" y1="18" x2="42" y2="18"/><line x1="16" y1="6" x2="16" y2="14"/><line x1="32" y1="6" x2="32" y2="14"/><line x1="14" y1="26" x2="22" y2="26"/><line x1="14" y1="32" x2="26" y2="32"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">Java</span>
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+            </div>
+            <span class="project-year">2025</span>
+          </div>
+          <div class="project-title">Appointment Web App</div>
+          <p class="project-desc">Web application for appointment scheduling with a responsive interface. Java backend with business logic and HTML/CSS frontend.</p>
+        </div>
+        <span class="project-arrow">↗</span>
+      </div>
+ 
+      <!-- PROJECT 3 -->
+      <div class="project-card reveal" onclick="window.location.href='projects/calculator/index.html'">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background: radial-gradient(ellipse at 50% 60%, rgba(52,211,153,.14) 0%, transparent 60%)"></div>
+          <span class="thumb-number">03</span>
+          <div class="thumb-icon-wrap">
+            <svg viewBox="0 0 48 48"><rect x="10" y="6" width="28" height="36" rx="3"/><rect x="15" y="12" width="18" height="8" rx="1"/><circle cx="17" cy="28" r="2"/><circle cx="24" cy="28" r="2"/><circle cx="31" cy="28" r="2"/><circle cx="17" cy="36" r="2"/><circle cx="24" cy="36" r="2"/><circle cx="31" cy="36" r="2"/></svg>
+          </div>
+        </div>
+        <div class="project-info">
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+            </div>
+            <span class="project-year">2025</span>
+          </div>
+          <div class="project-title">Scientific Calculator</div>
+          <p class="project-desc">Fully functional scientific calculator built with vanilla JavaScript. Supports operations, history log, and keyboard input.</p>
+        </div>
+        <span class="project-arrow">↗</span>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <div class="divider"></div>
+ 
   <!-- EXPERIENCE -->
-  <section class="section" id="experience">
-    <!-- ... (igual que antes) ... -->
+  <section class="section reveal" id="experience">
+    <div class="section-header">
+      <div class="section-label">03 — Experience</div>
+      <h2 class="section-title">Where I've <span class="accent">Worked</span></h2>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-nav">
+        <div class="exp-nav-item active" data-target="exp-1">
+          <div class="exp-nav-company">Technical Support</div>
+          <div class="exp-nav-period">2024 — Present</div>
+        </div>
+        <div class="exp-nav-item" data-target="exp-2">
+          <div class="exp-nav-company">Development</div>
+          <div class="exp-nav-period">2023 — 2024</div>
+        </div>
+        <div class="exp-nav-item" data-target="exp-3">
+          <div class="exp-nav-company">University</div>
+          <div class="exp-nav-period">2022 — Present</div>
+        </div>
+      </div>
+      <div class="exp-entries">
+        <div class="exp-entry" id="exp-1">
+          <div class="exp-header">
+            <div class="exp-role">Technical Support Analyst</div>
+            <div class="exp-company-name">· Corporate Environment · Buenos Aires</div>
+          </div>
+          <p class="exp-body">
+            Providing technical support to end users and managing incidents related to hardware, software, and corporate systems.
+            Administration and configuration of Oracle NetSuite for internal business processes. Handling escalations and coordinating
+            with development teams to resolve critical issues. Documentation of procedures and knowledge base maintenance.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Oracle NetSuite</span>
+            <span class="tag">Technical Support</span>
+            <span class="tag">Salesforce</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+        <div class="exp-entry" id="exp-2" style="display:none">
+          <div class="exp-header">
+            <div class="exp-role">Junior Developer</div>
+            <div class="exp-company-name">· Software Projects · Buenos Aires</div>
+          </div>
+          <p class="exp-body">
+            Development of internal management systems using C# and .NET Framework. Database design and queries in SQL Server.
+            Collaboration on Java-based web application for appointment scheduling. Implementation of automation scripts in Python
+            for integration with external APIs.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">C# / .NET</span>
+            <span class="tag">SQL Server</span>
+            <span class="tag">Java</span>
+            <span class="tag">Python</span>
+          </div>
+        </div>
+        <div class="exp-entry" id="exp-3" style="display:none">
+          <div class="exp-header">
+            <div class="exp-role">Systems Engineering Student</div>
+            <div class="exp-company-name">· Buenos Aires, Argentina</div>
+          </div>
+          <p class="exp-body">
+            Studying Systems Engineering with focus on software development, databases, algorithms, and system architecture.
+            Academic projects involving full-stack development, data structures, and object-oriented programming.
+            Active participation in group projects simulating real-world development environments.
+          </p>
+          <div class="exp-tags">
+            <span class="tag">Algorithms</span>
+            <span class="tag">OOP</span>
+            <span class="tag">Databases</span>
+            <span class="tag">System Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
-
+ 
   <div class="divider"></div>
-
+ 
   <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <!-- ... (igual que antes) ... -->
+  <section class="contact-section reveal" id="contact">
+    <div class="contact-bg-text">HELLO</div>
+    <div class="contact-inner">
+      <div class="contact-info">
+        <div class="section-label">04 — Contact</div>
+        <h2 class="section-title" style="margin-bottom:1rem;">Let's <span class="accent">Talk</span></h2>
+        <p style="color:var(--muted);font-size:.88rem;line-height:1.8;max-width:380px;margin-bottom:2rem;">
+          Available for internships, freelance projects, or just a good technical conversation.
+          Don't hesitate to reach out — I reply within 24 hours.
+        </p>
+        <div class="big-email">guadalupe.rodriguez@email.com</div>
+        <div class="contact-socials">
+          <a href="https://linkedin.com/in/guadalupe-rodriguez" target="_blank" class="social-btn">LinkedIn ↗</a>
+          <a href="https://github.com/guadalupe-rodriguez" target="_blank" class="social-btn">GitHub ↗</a>
+          <a href="mailto:guadalupe.rodriguez@email.com" class="social-btn">Send Email ↗</a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-card">
+          <div class="contact-card-row">
+            <span class="contact-card-label">Location</span>
+            <span class="contact-card-value">Buenos Aires, Argentina</span>
+          </div>
+          <div class="contact-card-row">
+            <span class="contact-card-label">Status</span>
+            <span class="contact-card-value"><span class="blink" style="display:inline-block;margin-right:.5rem;"></span>Available</span>
+          </div>
+          <div class="contact-card-row">
+            <span class="contact-card-label">Languages</span>
+            <span class="contact-card-value">Spanish (native) · English (C1)</span>
+          </div>
+          <div class="contact-card-row">
+            <span class="contact-card-label">Looking for</span>
+            <span class="contact-card-value">Internship / Junior Role</span>
+          </div>
+          <div class="contact-card-row">
+            <span class="contact-card-label">Response time</span>
+            <span class="contact-card-value">Within 24h</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
-
+ 
   <!-- FOOTER -->
   <footer>
     <span class="footer-logo">Guadalupe Rodríguez · Technical Support &amp; Developer</span>
     <span class="footer-copy">© 2026 · Buenos Aires, Argentina</span>
   </footer>
-
+ 
   <script src="js/main.js"></script>
 </body>
 </html>
+ 
