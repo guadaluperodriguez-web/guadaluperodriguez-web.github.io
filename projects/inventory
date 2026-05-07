@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management System — Guadalupe Rodríguez</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --surface2: #16161f;
+      --border: rgba(255,255,255,.07); --text: #e8e8f0; --muted: #6b6b80;
+      --accent: #f472b6; --accent2: #a78bfa; --accent3: #34d399;
+      --danger: #f87171; --warn: #fbbf24;
+      --font-mono: 'DM Mono', monospace; --font-body: 'DM Sans', sans-serif;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-weight: 300; min-height: 100vh; }
+
+    /* TOP BAR */
+    .topbar {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: .9rem 2rem; display: flex; align-items: center; gap: 1rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .back-btn {
+      font-family: var(--font-mono); font-size: .72rem; color: var(--muted);
+      text-decoration: none; border: 1px solid var(--border);
+      padding: .35rem .9rem; transition: all .2s;
+    }
+    .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .topbar-title { font-family: var(--font-mono); font-size: .8rem; color: var(--text); }
+    .topbar-tags { display: flex; gap: .4rem; margin-left: auto; }
+    .badge {
+      font-family: var(--font-mono); font-size: .62rem; padding: .2rem .6rem;
+      border: 1px solid var(--border); color: var(--muted); letter-spacing: .06em;
+    }
+
+    /* LAYOUT */
+    .app { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 49px); }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: var(--surface); border-right: 1px solid var(--border);
+      padding: 1.5rem 0;
+    }
+    .sidebar-section { padding: 0 1.2rem; margin-bottom: 1.5rem; }
+    .sidebar-label {
+      font-family: var(--font-mono); font-size: .6rem; color: var(--muted);
+      letter-spacing: .15em; text-transform: uppercase; margin-bottom: .6rem;
+    }
+    .sidebar-btn {
+      display: flex; align-items: center; gap: .7rem; width: 100%;
+      padding: .65rem .8rem; background: transparent; border: none;
+      color: var(--muted); font-family: var(--font-body); font-size: .82rem;
+      cursor: pointer; transition: all .2s; text-align: left; border-radius: 4px;
+      margin-bottom: .1rem;
+    }
+    .sidebar-btn:hover { background: rgba(255,255,255,.03); color: var(--text); }
+    .sidebar-btn.active { background: rgba(244,114,182,.08); color: var(--accent); }
+    .sidebar-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; flex-shrink: 0; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border); border-bottom: 1px solid var(--border);
+    }
+    .stat-card {
+      background: var(--surface); padding: 1.2rem 1.5rem;
+    }
+    .stat-card-label { font-family: var(--font-mono); font-size: .62rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
+    .stat-card-val { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 500; color: var(--text); }
+    .stat-card-val.green { color: var(--accent3); }
+    .stat-card-val.pink { color: var(--accent); }
+    .stat-card-val.warn { color: var(--warn); }
+
+    /* MAIN CONTENT */
+    .main { display: flex; flex-direction: column; }
+    .main-header {
+      padding: 1.2rem 2rem; display: flex; align-items: center; gap: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .main-title { font-family: var(--font-mono); font-size: .82rem; flex: 1; }
+    .search-input {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); padding: .5rem 1rem;
+      font-family: var(--font-mono); font-size: .75rem;
+      outline: none; width: 200px; transition: border-color .2s;
+    }
+    .search-input:focus { border-color: rgba(244,114,182,.4); }
+    .add-btn {
+      background: var(--accent); color: #0a0a0f; border: none;
+      padding: .5rem 1.2rem; font-family: var(--font-mono); font-size: .72rem;
+      cursor: pointer; transition: all .2s; letter-spacing: .04em;
+    }
+    .add-btn:hover { background: var(--accent2); }
+
+    /* TABLE */
+    .table-wrap { flex: 1; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--surface2); }
+    th {
+      padding: .8rem 1.5rem; text-align: left;
+      font-family: var(--font-mono); font-size: .62rem; color: var(--muted);
+      letter-spacing: .12em; text-transform: uppercase; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 1rem 1.5rem; font-size: .82rem; color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover td { background: rgba(255,255,255,.015); }
+    .stock-badge {
+      display: inline-block; padding: .15rem .55rem;
+      font-family: var(--font-mono); font-size: .62rem; letter-spacing: .06em;
+    }
+    .stock-ok { background: rgba(52,211,153,.1); color: var(--accent3); border: 1px solid rgba(52,211,153,.2); }
+    .stock-low { background: rgba(251,191,36,.1); color: var(--warn); border: 1px solid rgba(251,191,36,.2); }
+    .stock-out { background: rgba(248,113,113,.1); color: var(--danger); border: 1px solid rgba(248,113,113,.2); }
+    .action-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: .25rem .7rem;
+      font-family: var(--font-mono); font-size: .62rem;
+      cursor: pointer; transition: all .2s; margin-right: .3rem;
+    }
+    .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .action-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+    .mono { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.7);
+      backdrop-filter: blur(4px); z-index: 1000;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      width: 420px; padding: 2rem;
+    }
+    .modal-title { font-family: var(--font-mono); font-size: .85rem; margin-bottom: 1.5rem; }
+    .field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.1rem; }
+    .field label { font-family: var(--font-mono); font-size: .62rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+    .field input, .field select {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); padding: .6rem .9rem;
+      font-family: var(--font-mono); font-size: .78rem;
+      outline: none; transition: border-color .2s;
+    }
+    .field input:focus, .field select:focus { border-color: rgba(244,114,182,.4); }
+    .field select option { background: var(--surface2); }
+    .modal-actions { display: flex; gap: .8rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .btn-cancel {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: .5rem 1.2rem;
+      font-family: var(--font-mono); font-size: .72rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-cancel:hover { border-color: var(--muted); color: var(--text); }
+    .empty-state { text-align: center; padding: 4rem; color: var(--muted); font-family: var(--font-mono); font-size: .78rem; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="../../index.html" class="back-btn">← Back</a>
+    <span class="topbar-title">Inventory Management System</span>
+    <div class="topbar-tags">
+      <span class="badge">C#</span>
+      <span class="badge">.NET</span>
+      <span class="badge">SQL</span>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Navigation</div>
+        <button class="sidebar-btn active" onclick="showView('inventory')">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Inventory
+        </button>
+        <button class="sidebar-btn" onclick="showView('reports')">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Reports
+        </button>
+        <button class="sidebar-btn" onclick="showView('users')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Users
+        </button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Filter by Category</div>
+        <button class="sidebar-btn" onclick="filterCategory('all')">All Products</button>
+        <button class="sidebar-btn" onclick="filterCategory('Electronics')">Electronics</button>
+        <button class="sidebar-btn" onclick="filterCategory('Office')">Office</button>
+        <button class="sidebar-btn" onclick="filterCategory('Storage')">Storage</button>
+      </div>
+    </aside>
+
+    <main class="main" id="main-content">
+      <!-- Stats bar -->
+      <div class="stats-bar" id="stats-bar">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Products</div>
+          <div class="stat-card-val" id="stat-total">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">In Stock</div>
+          <div class="stat-card-val green" id="stat-ok">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Low Stock</div>
+          <div class="stat-card-val warn" id="stat-low">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Out of Stock</div>
+          <div class="stat-card-val pink" id="stat-out">0</div>
+        </div>
+      </div>
+
+      <!-- Inventory view -->
+      <div id="view-inventory">
+        <div class="main-header">
+          <span class="main-title">Products · <span id="row-count">0</span> items</span>
+          <input type="text" class="search-input" placeholder="Search product..." id="search-input" oninput="applyFilters()">
+          <button class="add-btn" onclick="openModal()">+ Add Product</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Min Stock</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="product-table-body"></tbody>
+          </table>
+          <div class="empty-state" id="empty-state" style="display:none">No products found.</div>
+        </div>
+      </div>
+
+      <!-- Reports view -->
+      <div id="view-reports" style="display:none; padding:2rem;">
+        <div class="main-header" style="padding:0 0 1.2rem; margin-bottom:1.5rem; border-bottom:1px solid var(--border);">
+          <span class="main-title">Reports</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border);">
+          <div style="background:var(--surface); padding:1.5rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">Stock Summary</div>
+            <div id="report-stock"></div>
+          </div>
+          <div style="background:var(--surface); padding:1.5rem;">
+            <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;">By Category</div>
+            <div id="report-cat"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users view -->
+      <div id="view-users" style="display:none; padding:2rem;">
+        <div class="main-header" style="padding:0 0 1.2rem; margin-bottom:1.5rem; border-bottom:1px solid var(--border);">
+          <span class="main-title">System Users</span>
+        </div>
+        <table>
+          <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">USR-001</td><td>Guadalupe Rodríguez</td><td><span class="stock-badge stock-ok">Admin</span></td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+            <tr><td class="mono">USR-002</td><td>Martín García</td><td><span class="stock-badge stock-low">Operator</span></td><td><span class="stock-badge stock-ok">Active</span></td></tr>
+            <tr><td class="mono">USR-003</td><td>Laura Paz</td><td><span class="stock-badge stock-low">Viewer</span></td><td><span class="stock-badge stock-out">Inactive</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-title" id="modal-title">Add New Product</div>
+      <div class="field"><label>Product Name</label><input type="text" id="f-name" placeholder="e.g. Mechanical Keyboard"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="field"><label>Category</label>
+          <select id="f-cat">
+            <option>Electronics</option><option>Office</option><option>Storage</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Price (USD)</label><input type="number" id="f-price" placeholder="0.00" min="0" step="0.01"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="field"><label>Stock Quantity</label><input type="number" id="f-stock" placeholder="0" min="0"></div>
+        <div class="field"><label>Min Stock Alert</label><input type="number" id="f-min" placeholder="5" min="0"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="add-btn" onclick="saveProduct()">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let products = [
+      { id: 'PRD-001', name: 'Mechanical Keyboard', category: 'Electronics', stock: 24, min: 5, price: 89.99 },
+      { id: 'PRD-002', name: 'USB-C Hub 7-in-1', category: 'Electronics', stock: 3, min: 5, price: 45.00 },
+      { id: 'PRD-003', name: 'A4 Paper Ream', category: 'Office', stock: 0, min: 10, price: 8.50 },
+      { id: 'PRD-004', name: 'Wireless Mouse', category: 'Electronics', stock: 18, min: 5, price: 35.00 },
+      { id: 'PRD-005', name: 'Filing Cabinet', category: 'Storage', stock: 7, min: 3, price: 120.00 },
+      { id: 'PRD-006', name: 'Ballpoint Pens (Box)', category: 'Office', stock: 2, min: 5, price: 6.00 },
+    ];
+
+    let editingId = null;
+    let currentFilter = 'all';
+
+    function getStatus(stock, min) {
+      if (stock === 0) return 'out';
+      if (stock <= min) return 'low';
+      return 'ok';
+    }
+
+    function getStatusBadge(stock, min) {
+      const s = getStatus(stock, min);
+      if (s === 'ok') return '<span class="stock-badge stock-ok">In Stock</span>';
+      if (s === 'low') return '<span class="stock-badge stock-low">Low Stock</span>';
+      return '<span class="stock-badge stock-out">Out of Stock</span>';
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      let filtered = products;
+      if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter);
+      if (q) filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q));
+      renderTable(filtered);
+    }
+
+    function filterCategory(cat) {
+      currentFilter = cat;
+      applyFilters();
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('product-table-body');
+      const empty = document.getElementById('empty-state');
+      document.getElementById('row-count').textContent = data.length;
+
+      if (data.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+      tbody.innerHTML = data.map(p => `
+        <tr>
+          <td class="mono">${p.id}</td>
+          <td>${p.name}</td>
+          <td><span class="mono">${p.category}</span></td>
+          <td class="mono">${p.stock}</td>
+          <td class="mono">${p.min}</td>
+          <td class="mono">$${p.price.toFixed(2)}</td>
+          <td>${getStatusBadge(p.stock, p.min)}</td>
+          <td>
+            <button class="action-btn" onclick="editProduct('${p.id}')">Edit</button>
+            <button class="action-btn del" onclick="deleteProduct('${p.id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = products.length;
+      document.getElementById('stat-ok').textContent = products.filter(p => getStatus(p.stock, p.min) === 'ok').length;
+      document.getElementById('stat-low').textContent = products.filter(p => getStatus(p.stock, p.min) === 'low').length;
+      document.getElementById('stat-out').textContent = products.filter(p => getStatus(p.stock, p.min) === 'out').length;
+    }
+
+    function openModal(id = null) {
+      editingId = id;
+      document.getElementById('modal-title').textContent = id ? 'Edit Product' : 'Add New Product';
+      if (id) {
+        const p = products.find(x => x.id === id);
+        document.getElementById('f-name').value = p.name;
+        document.getElementById('f-cat').value = p.category;
+        document.getElementById('f-price').value = p.price;
+        document.getElementById('f-stock').value = p.stock;
+        document.getElementById('f-min').value = p.min;
+      } else {
+        ['f-name','f-price','f-stock','f-min'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('f-cat').value = 'Electronics';
+      }
+      document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModal() { document.getElementById('modal').classList.remove('open'); editingId = null; }
+
+    function saveProduct() {
+      const name = document.getElementById('f-name').value.trim();
+      const cat = document.getElementById('f-cat').value;
+      const price = parseFloat(document.getElementById('f-price').value) || 0;
+      const stock = parseInt(document.getElementById('f-stock').value) || 0;
+      const min = parseInt(document.getElementById('f-min').value) || 5;
+      if (!name) { alert('Product name is required.'); return; }
+
+      if (editingId) {
+        const p = products.find(x => x.id === editingId);
+        Object.assign(p, { name, category: cat, price, stock, min });
+      } else {
+        const newId = 'PRD-' + String(products.length + 1).padStart(3, '0');
+        products.push({ id: newId, name, category: cat, stock, min, price });
+      }
+      closeModal();
+      applyFilters();
+    }
+
+    function editProduct(id) { openModal(id); }
+
+    function deleteProduct(id) {
+      if (confirm('Delete this product?')) {
+        products = products.filter(p => p.id !== id);
+        applyFilters();
+      }
+    }
+
+    function showView(view) {
+      ['inventory','reports','users'].forEach(v => {
+        document.getElementById('view-' + v).style.display = v === view ? 'block' : 'none';
+      });
+      document.getElementById('stats-bar').style.display = view === 'inventory' ? 'grid' : 'none';
+      document.querySelectorAll('.sidebar-btn').forEach((b, i) => {
+        b.classList.toggle('active', ['inventory','reports','users'][i] === view);
+      });
+      if (view === 'reports') renderReports();
+    }
+
+    function renderReports() {
+      const cats = [...new Set(products.map(p => p.category))];
+      document.getElementById('report-stock').innerHTML = `
+        <div style="font-family:var(--font-mono);font-size:.8rem;color:var(--accent3);margin-bottom:.5rem;">In Stock: ${products.filter(p=>p.stock>p.min).length}</div>
+        <div style="font-family:var(--font-mono);font-size:.8rem;color:var(--warn);margin-bottom:.5rem;">Low Stock: ${products.filter(p=>p.stock>0&&p.stock<=p.min).length}</div>
+        <div style="font-family:var(--font-mono);font-size:.8rem;color:var(--danger);">Out of Stock: ${products.filter(p=>p.stock===0).length}</div>
+      `;
+      document.getElementById('report-cat').innerHTML = cats.map(c =>
+        `<div style="font-family:var(--font-mono);font-size:.78rem;color:var(--text);margin-bottom:.4rem;">${c}: <span style="color:var(--muted)">${products.filter(p=>p.category===c).length} items</span></div>`
+      ).join('');
+    }
+
+    // Init
+    applyFilters();
+  </script>
+</body>
+</html>
